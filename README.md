@@ -1,73 +1,46 @@
-# Welcome to your Lovable project
+# Warehouse Management System
 
-## Project info
+This repository is split into:
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+- `frontend`: React (Vite) app on port `5173`
+- `backend`: Node.js (Express) API on port `5000`
 
-## How can I edit this code?
+Environment variables are loaded from a unified root `.env` file (not committed).
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Install
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm install --prefix frontend
+npm install --prefix backend
 ```
 
-**Edit a file directly in GitHub**
+## Run
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+# Terminal 1
+npm run dev:backend
 
-**Use GitHub Codespaces**
+# Terminal 2
+npm run dev:frontend
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Available scripts
 
-## What technologies are used for this project?
+- `npm run dev:frontend`
+- `npm run dev:backend`
+- `npm run build:frontend`
+- `npm run lint:frontend`
+- `npm run test:frontend`
+- `npm run start:backend`
+- `npm --prefix backend run test`
 
-This project is built with:
+## Trace Timeline behavior
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- `/trace` defaults to a **GLOBAL** feed (`/trace` with no query params).
+- Filtered deep-links use query params:
+  - Example: `/trace?mode=filtered&type=sku&value=SKU000001`
+- Pagination is supported in both modes with:
+  - `page`
+  - `pageSize` (`10`, `20`, `50`)
+- Backend API contract:
+  - `GET /api/trace/events?mode=global|filtered&type=...&value=...&page=...&pageSize=...`

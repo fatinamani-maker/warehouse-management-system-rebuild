@@ -1,0 +1,22 @@
+import express from "express";
+import authRoutes from "./authRoutes.js";
+import masterDataRoutes from "./masterDataRoutes.js";
+import inboundRoutes from "./inboundRoutes.js";
+import putawayRoutes from "./putawayRoutes.js";
+import outboundRoutes from "./outboundRoutes.js";
+import inventoryRoutes from "./inventoryRoutes.js";
+import rmaRoutes from "./rmaRoutes.js";
+import traceRoutes from "./traceRoutes.js";
+
+const router = express.Router();
+
+router.use(authRoutes);
+router.use(masterDataRoutes);
+router.use(inboundRoutes);
+router.use(putawayRoutes);
+router.use(outboundRoutes);
+router.use(inventoryRoutes);
+router.use(rmaRoutes);
+router.use(traceRoutes);
+
+export default router;

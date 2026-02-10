@@ -1,0 +1,869 @@
+openapi: 3.0.3
+info:
+  title: Warehouse Management System Stub API
+  version: 1.0.0
+  description: |
+    Versioned backend scaffold for web and mobile clients.
+    All endpoints are stubs returning mock envelopes.
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local backend
+security:
+  - bearerAuth: []
+paths:
+  /me:
+    get:
+      tags: [Auth]
+      summary: Get authenticated context
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /lov/{type}:
+    get:
+      tags: [Auth]
+      summary: Get LOV values by type
+      parameters:
+        - $ref: '#/components/parameters/TypeParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+    post:
+      tags: [Users]
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/SuccessResponse'
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+    put:
+      tags: [Users]
+      summary: Update user
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericPayload'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+    delete:
+      tags: [Users]
+      summary: Delete user (record only)
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /roles:
+    get:
+      tags: [Roles]
+      summary: List roles
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+    post:
+      tags: [Roles]
+      summary: Create role (lowercase role id)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/SuccessResponse'
+  /roles/{id}:
+    get:
+      tags: [Roles]
+      summary: Get role
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+    put:
+      tags: [Roles]
+      summary: Update role
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericPayload'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+    delete:
+      tags: [Roles]
+      summary: Delete role (record only)
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /permissions:
+    get:
+      tags: [Permissions]
+      summary: List permissions
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+    post:
+      tags: [Permissions]
+      summary: Create permission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePermissionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/SuccessResponse'
+  /permissions/{id}:
+    get:
+      tags: [Permissions]
+      summary: Get permission
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+    put:
+      tags: [Permissions]
+      summary: Update permission
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericPayload'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+    delete:
+      tags: [Permissions]
+      summary: Delete permission
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /suppliers:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /suppliers/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /products:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /products/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /warehouses:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /warehouses/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /locations:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /locations/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+
+  /asn:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /asn/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /asn/{id}/progress:
+    post:
+      tags: [Inbound]
+      summary: Progress ASN status
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /asn/{id}/cancel:
+    post:
+      tags: [Inbound]
+      summary: Cancel ASN (records reason)
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /grn:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /grn/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /grn/{id}/progress:
+    post:
+      tags: [Inbound]
+      summary: Progress GRN status
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /grn/{id}/cancel:
+    post:
+      tags: [Inbound]
+      summary: Cancel GRN (records reason)
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /putaway/tasks:
+    get:
+      tags: [Putaway]
+      summary: List putaway tasks
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - in: query
+          name: status
+          schema:
+            type: string
+        - in: query
+          name: assignee
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+  /putaway/tasks/{id}/start:
+    post:
+      tags: [Putaway]
+      summary: Start putaway task
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /putaway/scan:
+    post:
+      tags: [Putaway]
+      summary: Process putaway scan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutawayScanRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /putaway/tasks/{id}/complete:
+    post:
+      tags: [Putaway]
+      summary: Complete putaway task
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /orders:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /orders/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+
+  /picking/tasks:
+    get:
+      tags: [Picking]
+      summary: List picking tasks
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - in: query
+          name: status
+          schema:
+            type: string
+        - in: query
+          name: assignee
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+  /picking/tasks/{id}/start:
+    post:
+      tags: [Picking]
+      summary: Start picking task
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /picking/scan:
+    post:
+      tags: [Picking]
+      summary: Process picking scan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PickingScanRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /picking/tasks/{id}/complete:
+    post:
+      tags: [Picking]
+      summary: Complete picking task
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /shipping/confirm:
+    post:
+      tags: [Shipping]
+      summary: Confirm shipping
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingConfirmRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /inventory/summary:
+    get:
+      tags: [Inventory]
+      summary: Inventory summary
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+  /inventory/stock:
+    get:
+      tags: [Inventory]
+      summary: Inventory stock by filters
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - in: query
+          name: sku
+          schema:
+            type: string
+        - in: query
+          name: location
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSuccessResponse'
+  /inventory/adjustments:
+    post:
+      tags: [Inventory]
+      summary: Create inventory adjustment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryAdjustmentRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /cycle-counts:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /cycle-counts/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /cycle-counts/{id}/start:
+    post:
+      tags: [Inventory]
+      summary: Start cycle count
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /cycle-counts/scan:
+    post:
+      tags: [Inventory]
+      summary: Scan cycle count line
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CycleCountScanRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /cycle-counts/{id}/complete:
+    post:
+      tags: [Inventory]
+      summary: Complete cycle count
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /rma:
+    $ref: '#/components/pathItems/GenericCrudCollection'
+  /rma/{id}:
+    $ref: '#/components/pathItems/GenericCrudItem'
+  /rma/{id}/cancel:
+    post:
+      tags: [RMA]
+      summary: Cancel RMA
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /rma/{id}/progress:
+    post:
+      tags: [RMA]
+      summary: Progress RMA status
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+  /trace/sku/{sku}:
+    get:
+      tags: [Traceability]
+      summary: Trace by SKU
+      parameters:
+        - in: path
+          name: sku
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /trace/qr/{code}:
+    get:
+      tags: [Traceability]
+      summary: Trace by QR code
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+  /trace/rfid/{tag}:
+    get:
+      tags: [Traceability]
+      summary: Trace by RFID tag
+      parameters:
+        - in: path
+          name: tag
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    IdParam:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    TypeParam:
+      in: path
+      name: type
+      required: true
+      schema:
+        type: string
+    PageParam:
+      in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 1
+    PageSizeParam:
+      in: query
+      name: pageSize
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+
+  responses:
+    SuccessResponse:
+      description: Success envelope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessEnvelope'
+    ListSuccessResponse:
+      description: Success envelope with pagination metadata
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListSuccessEnvelope'
+    ErrorResponse:
+      description: Error envelope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+  schemas:
+    Meta:
+      type: object
+      properties:
+        requestId:
+          type: string
+        tenantId:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+      required: [requestId, tenantId, timestamp]
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+      required: [page, pageSize, total, totalPages]
+
+    SuccessEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          additionalProperties: true
+        meta:
+          allOf:
+            - $ref: '#/components/schemas/Meta'
+      required: [success, data, meta]
+
+    ListSuccessEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        meta:
+          allOf:
+            - $ref: '#/components/schemas/Meta'
+            - type: object
+              properties:
+                pagination:
+                  $ref: '#/components/schemas/Pagination'
+      required: [success, data, meta]
+
+    ErrorEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              nullable: true
+          required: [code, message]
+        meta:
+          $ref: '#/components/schemas/Meta'
+      required: [success, error, meta]
+
+    GenericPayload:
+      type: object
+      additionalProperties: true
+
+    ProgressRequest:
+      type: object
+      properties:
+        action:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+
+    CancelRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+        confirm:
+          type: boolean
+      required: [reason]
+
+    CreateUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        roleId:
+          type: string
+        name:
+          type: string
+      required: [email]
+
+    CreateRoleRequest:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: Lowercase role id
+          pattern: '^[a-z0-9_\\-]+$'
+        permissions:
+          type: array
+          items:
+            type: string
+      required: [role_id]
+
+    CreatePermissionRequest:
+      type: object
+      properties:
+        permission_id:
+          type: string
+        description:
+          type: string
+      required: [permission_id]
+
+    PutawayScanRequest:
+      type: object
+      properties:
+        taskId:
+          type: string
+        barcode:
+          type: string
+        rfid:
+          type: string
+        locationCode:
+          type: string
+      required: [taskId, barcode]
+
+    PickingScanRequest:
+      type: object
+      properties:
+        taskId:
+          type: string
+        sku:
+          type: string
+        qty:
+          type: number
+        barcode:
+          type: string
+        rfid:
+          type: string
+      required: [taskId, sku, qty]
+
+    ShippingConfirmRequest:
+      type: object
+      properties:
+        shipmentId:
+          type: string
+        orderId:
+          type: string
+        carrier:
+          type: string
+        trackingNo:
+          type: string
+
+    InventoryAdjustmentRequest:
+      type: object
+      properties:
+        sku:
+          type: string
+        location:
+          type: string
+        qty:
+          type: number
+        reason:
+          type: string
+      required: [sku, location, qty, reason]
+
+    CycleCountScanRequest:
+      type: object
+      properties:
+        countId:
+          type: string
+        sku:
+          type: string
+        location:
+          type: string
+        qty:
+          type: number
+        barcode:
+          type: string
+        rfid:
+          type: string
+      required: [countId, sku, location, qty]
+
+  pathItems:
+    GenericCrudCollection:
+      get:
+        tags: [CRUD]
+        summary: List records
+        parameters:
+          - $ref: '#/components/parameters/PageParam'
+          - $ref: '#/components/parameters/PageSizeParam'
+        responses:
+          '200':
+            $ref: '#/components/responses/ListSuccessResponse'
+      post:
+        tags: [CRUD]
+        summary: Create record
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericPayload'
+        responses:
+          '201':
+            $ref: '#/components/responses/SuccessResponse'
+    GenericCrudItem:
+      get:
+        tags: [CRUD]
+        summary: Get record by id
+        parameters:
+          - $ref: '#/components/parameters/IdParam'
+        responses:
+          '200':
+            $ref: '#/components/responses/SuccessResponse'
+      put:
+        tags: [CRUD]
+        summary: Update record
+        parameters:
+          - $ref: '#/components/parameters/IdParam'
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericPayload'
+        responses:
+          '200':
+            $ref: '#/components/responses/SuccessResponse'
+      delete:
+        tags: [CRUD]
+        summary: Delete record (soft/record-only in stub)
+        parameters:
+          - $ref: '#/components/parameters/IdParam'
+        responses:
+          '200':
+            $ref: '#/components/responses/SuccessResponse'
