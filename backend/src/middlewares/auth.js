@@ -95,6 +95,20 @@ function applyStubContext(req) {
 }
 
 async function verifyClerkJwt(req, _res, next) {
+
+  // DEVELOPMENT BYPASS (SAFE)
+  if (process.env.NODE_ENV === "development") {
+    req.context = {
+      ...req.context,
+      userId: "USR00001",
+      tenantId: "TEN001",
+      roles: ["superadmin"],
+      permissions: ["*"]
+    };
+
+    return next();
+  }
+
   try {
     if (isNonProduction() && applyStubContext(req)) {
       return next();
@@ -137,7 +151,11 @@ async function verifyClerkJwt(req, _res, next) {
 
     return next();
   } catch (error) {
-    return next(error instanceof ApiError ? error : new ApiError(401, "INVALID_TOKEN", "Unable to verify Clerk JWT"));
+    return next(
+      error instanceof ApiError
+        ? error
+        : new ApiError(401, "INVALID_TOKEN", "Unable to verify Clerk JWT")
+    );
   }
 }
 
