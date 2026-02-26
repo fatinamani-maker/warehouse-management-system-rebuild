@@ -1,40 +1,166 @@
 import express from "express";
 import { requireRole } from "../../middlewares/auth.js";
-import { validate } from "../../middlewares/validate.js";
-import {
-  listSchema,
-  createSchema,
-  updateSchema,
-  idSchema,
-  progressSchema,
-  cancelSchema,
-} from "../../validators/inboundValidators.js";
-import {
-  listFactory,
-  getFactory,
-  createFactory,
-  updateFactory,
-  deleteFactory,
-  progressFactory,
-  cancelFactory,
-} from "../../controllers/inboundController.js";
 
 const router = express.Router();
 
-function mountCrud(resourcePath, resourceKey) {
-  router.get(`/${resourcePath}`, requireRole(["superadmin", "hqadmin", "storemanager"]), validate(listSchema), listFactory(resourceKey));
-  router.get(`/${resourcePath}/:id`, requireRole(["superadmin", "hqadmin", "storemanager"]), validate(idSchema), getFactory(resourceKey));
-  router.post(`/${resourcePath}`, requireRole(["superadmin", "hqadmin", "storemanager"]), validate(createSchema), createFactory(resourceKey));
-  router.put(`/${resourcePath}/:id`, requireRole(["superadmin", "hqadmin", "storemanager"]), validate(updateSchema), updateFactory(resourceKey));
-  router.delete(`/${resourcePath}/:id`, requireRole(["superadmin", "hqadmin"]), validate(idSchema), deleteFactory(resourceKey));
-}
+// ==============================
+// STUB DATA
+// ==============================
+const inboundStub = [
+  {
+    id: "ASN000001",
+    type: "asn",
+    tenantId: "TEN001",
+    status: "CREATED",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "GRN000001",
+    type: "grn",
+    tenantId: "TEN001",
+    status: "RECEIVED",
+    createdAt: new Date().toISOString(),
+  }
+];
 
-mountCrud("asn", "asn");
-mountCrud("grn", "grn");
+// ==============================
+// ASN CRUD
+// ==============================
 
-router.post("/asn/:id/progress", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(progressSchema), progressFactory("asn"));
-router.post("/grn/:id/progress", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(progressSchema), progressFactory("grn"));
-router.post("/asn/:id/cancel", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(cancelSchema), cancelFactory("asn"));
-router.post("/grn/:id/cancel", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(cancelSchema), cancelFactory("grn"));
+router.get("/asn", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    data: inboundStub.filter(i => i.type === "asn")
+  });
+});
+
+router.get("/asn/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      id: req.params.id,
+      type: "asn",
+      tenantId: "TEN001",
+      status: "CREATED"
+    }
+  });
+});
+
+router.post("/asn", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: "ASN created successfully",
+    data: {
+      id: "ASN000002",
+      ...req.body,
+      tenantId: "TEN001",
+      status: "CREATED"
+    }
+  });
+});
+
+router.put("/asn/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: "ASN updated successfully",
+    data: {
+      id: req.params.id,
+      ...req.body
+    }
+  });
+});
+
+router.delete("/asn/:id", requireRole(["superadmin", "hqadmin"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `ASN ${req.params.id} deleted successfully`
+  });
+});
+
+// ==============================
+// GRN CRUD
+// ==============================
+
+router.get("/grn", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    data: inboundStub.filter(i => i.type === "grn")
+  });
+});
+
+router.get("/grn/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      id: req.params.id,
+      type: "grn",
+      tenantId: "TEN001",
+      status: "RECEIVED"
+    }
+  });
+});
+
+router.post("/grn", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: "GRN created successfully",
+    data: {
+      id: "GRN000002",
+      ...req.body,
+      tenantId: "TEN001",
+      status: "RECEIVED"
+    }
+  });
+});
+
+router.put("/grn/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: "GRN updated successfully",
+    data: {
+      id: req.params.id,
+      ...req.body
+    }
+  });
+});
+
+router.delete("/grn/:id", requireRole(["superadmin", "hqadmin"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `GRN ${req.params.id} deleted successfully`
+  });
+});
+
+// ==============================
+// PROGRESS & CANCEL
+// ==============================
+
+router.post("/asn/:id/progress", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `ASN ${req.params.id} progressed successfully`
+  });
+});
+
+router.post("/grn/:id/progress", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `GRN ${req.params.id} progressed successfully`
+  });
+});
+
+router.post("/asn/:id/cancel", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `ASN ${req.params.id} cancelled successfully`
+  });
+});
+
+router.post("/grn/:id/cancel", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `GRN ${req.params.id} cancelled successfully`
+  });
+});
 
 export default router;
