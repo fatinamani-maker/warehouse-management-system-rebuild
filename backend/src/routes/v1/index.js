@@ -8,6 +8,7 @@ import inventoryRoutes from "./inventoryRoutes.js";
 import rmaRoutes from "./rmaRoutes.js";
 import traceRoutes from "./traceRoutes.js";
 import usersRoutes from "./usersRoutes.js";
+import lovRoutes from "./lovRoutes.js";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use(inventoryRoutes);
 router.use(rmaRoutes);
 router.use(traceRoutes);
 router.use("/users", usersRoutes);
+router.use("/lov", lovRoutes);
 
 export default router;
