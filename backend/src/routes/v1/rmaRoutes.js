@@ -1,32 +1,107 @@
 import express from "express";
 import { requireRole } from "../../middlewares/auth.js";
-import { validate } from "../../middlewares/validate.js";
-import {
-  listSchema,
-  createSchema,
-  updateSchema,
-  idSchema,
-  cancelSchema,
-  progressSchema,
-} from "../../validators/rmaValidators.js";
-import {
-  listRma,
-  getRma,
-  createRma,
-  updateRma,
-  deleteRma,
-  cancelRma,
-  progressRma,
-} from "../../controllers/rmaController.js";
 
 const router = express.Router();
 
-router.get("/rma", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(listSchema), listRma);
-router.get("/rma/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(idSchema), getRma);
-router.post("/rma", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(createSchema), createRma);
-router.put("/rma/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(updateSchema), updateRma);
-router.delete("/rma/:id", requireRole(["superadmin", "hqadmin"]), validate(idSchema), deleteRma);
-router.post("/rma/:id/cancel", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(cancelSchema), cancelRma);
-router.post("/rma/:id/progress", requireRole(["superadmin", "hqadmin", "storemanager"]), validate(progressSchema), progressRma);
+// ==============================
+// STUB DATA
+// ==============================
+const rmaStub = [
+  {
+    id: "RMA000001",
+    referenceNo: "RET001",
+    status: "CREATED",
+    reason: "Damaged Item",
+    tenantId: "TEN001",
+    createdAt: new Date().toISOString(),
+  }
+];
+
+// ==============================
+// LIST RMA
+// ==============================
+router.get("/rma", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    data: rmaStub
+  });
+});
+
+// ==============================
+// GET RMA BY ID
+// ==============================
+router.get("/rma/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      id: req.params.id,
+      referenceNo: "RET001",
+      status: "CREATED",
+      reason: "Damaged Item",
+      tenantId: "TEN001",
+      createdAt: new Date().toISOString(),
+    }
+  });
+});
+
+// ==============================
+// CREATE RMA
+// ==============================
+router.post("/rma", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: "RMA created successfully",
+    data: {
+      id: "RMA000002",
+      ...req.body,
+      status: "CREATED",
+      tenantId: "TEN001"
+    }
+  });
+});
+
+// ==============================
+// UPDATE RMA
+// ==============================
+router.put("/rma/:id", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: "RMA updated successfully",
+    data: {
+      id: req.params.id,
+      ...req.body
+    }
+  });
+});
+
+// ==============================
+// DELETE RMA
+// ==============================
+router.delete("/rma/:id", requireRole(["superadmin", "hqadmin"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `RMA ${req.params.id} deleted successfully`
+  });
+});
+
+// ==============================
+// CANCEL RMA
+// ==============================
+router.post("/rma/:id/cancel", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `RMA ${req.params.id} cancelled successfully`
+  });
+});
+
+// ==============================
+// PROGRESS RMA
+// ==============================
+router.post("/rma/:id/progress", requireRole(["superadmin", "hqadmin", "storemanager"]), (req, res) => {
+  res.json({
+    success: true,
+    message: `RMA ${req.params.id} progressed successfully`
+  });
+});
 
 export default router;
