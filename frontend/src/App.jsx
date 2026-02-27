@@ -12,6 +12,7 @@ import SelectWarehouse from "./pages/auth/SelectWarehouse";
 import Dashboard from "./pages/Dashboard";
 import TracePage from "./pages/trace/TracePage";
 import InboundPage from "./pages/inbound/InboundPage";
+import OutboundPage from "./pages/outbound/OutboundPage";
 import PutawayPage from "./pages/putaway/PutawayPage";
 import InventoryPage from "./pages/inventory/InventoryPage";
 import PickingPage from "./pages/picking/PickingPage";
@@ -49,6 +50,14 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
       <Route path="/trace" element={<ProtectedRoute><TracePage /></ProtectedRoute>}/>
       <Route path="/inbound" element={<ProtectedRoute><InboundPage /></ProtectedRoute>}/>
+      <Route
+        path="/outbound"
+        element={
+        <ProtectedRoute>
+        <OutboundPage />
+        </ProtectedRoute>
+      }
+      />
       <Route path="/putaway" element={<ProtectedRoute><PutawayPage /></ProtectedRoute>}/>
       <Route path="/inventory" element={<ProtectedRoute><InventoryPage /></ProtectedRoute>}/>
       <Route path="/picking" element={<ProtectedRoute><PickingPage /></ProtectedRoute>}/>
