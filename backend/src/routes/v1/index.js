@@ -9,7 +9,7 @@ import pickingRoutes from "../picking.js";
 import packingRoutes from "../packing.js";
 import shippingRoutes from "../shipping.js";
 import rmaRoutes from "./rmaRoutes.js";
-import traceRoutes from "./traceRoutes.js";
+import traceRoutes from "../trace.js";
 import usersRoutes from "./usersRoutes.js";
 import lovRoutes from "./lovRoutes.js";
 
@@ -25,7 +25,7 @@ router.use(pickingRoutes);
 router.use(packingRoutes);
 router.use("/shipping", shippingRoutes);
 router.use(rmaRoutes);
-router.use(traceRoutes);
+router.use("/trace", traceRoutes);
 router.use("/users", usersRoutes);
 router.use("/lov", lovRoutes);
 
